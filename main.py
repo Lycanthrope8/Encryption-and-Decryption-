@@ -1,7 +1,6 @@
 from cryptography.fernet import Fernet
 import random
 
-# RSA functions
 def is_prime(n, k=5):
     """Miller-Rabin primality test."""
     if n <= 1 or n % 2 == 0:
@@ -67,12 +66,12 @@ phi_n = (p - 1) * (q - 1)
 e = find_coprime(phi_n)
 d = mod_inverse(e, phi_n)
 
-print('p:',p)
-print('q:',q)   
-print('n:',n)
-print('phi_n:',phi_n)
-print('e:',e)
-print('d:',d)
+# print('p:',p)
+# print('q:',q)   
+# print('n:',n)
+# print('phi_n:',phi_n)
+# print('e:',e)
+# print('d:',d)
 
 def encrypt_rsa(m, e, n):
     return pow(m, e, n)
@@ -80,7 +79,7 @@ def encrypt_rsa(m, e, n):
 def decrypt_rsa(c, d, n):
     return pow(c, d, n)
 
-# Fernet functions
+
 def generate_encryption_key():
     return Fernet.generate_key()
 
@@ -97,11 +96,18 @@ def encrypt_with_fernet_and_rsa(path, encryption_key, e, n):
     with open(path + ".enc", "wb") as encrypted_file:
         encrypted_file.write(encrypted_data)
 
+def decrypt_with_fernet_and_rsa(path, encryption_key, d, n):
+    cipher = Fernet(encryption_key)
+    with open(path + ".enc", "rb") as encrypted_file:
+        encrypted_data = encrypted_file.read()
+        decrypted_data = cipher.decrypt(encrypted_data)
+        ciphertext_rsa = int.from_bytes(decrypted_data, 'big')
+        decrypted_message = decrypt_rsa(ciphertext_rsa, d, n)
+        print('decrypted_message:',decrypted_message)
+    with open(path + ".dec", "wb") as decrypted_file:
+        decrypted_file.write(decrypted_message.to_bytes((decrypted_message.bit_length() + 7) // 8, 'big'))
 
-
-# Example usage
 encryption_key = generate_encryption_key()
 filePath = "secret.txt"
-
-# Lab 6: File Encryption
 encrypt_with_fernet_and_rsa(filePath, encryption_key, e, n)
+decrypted_message = decrypt_with_fernet_and_rsa(filePath, encryption_key, d, n)
