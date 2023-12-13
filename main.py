@@ -88,9 +88,9 @@ def encrypt_with_fernet_and_rsa(path, encryption_key, e, n):
     with open(path, "rb") as file:
         data = file.read()
         m = int(data.hex(), 16)
-        print('m:',m)
+        # print('m:',m)
         ciphertext_rsa = encrypt_rsa(m, e, n)
-        print('ciphertext_rsa: ',ciphertext_rsa)
+        # print('ciphertext_rsa: ',ciphertext_rsa)
         encrypted_data = cipher.encrypt(ciphertext_rsa.to_bytes((ciphertext_rsa.bit_length() + 7) // 8, 'big'))
 
     with open(path + ".enc", "wb") as encrypted_file:
@@ -103,7 +103,6 @@ def decrypt_with_fernet_and_rsa(path, encryption_key, d, n):
         decrypted_data = cipher.decrypt(encrypted_data)
         ciphertext_rsa = int.from_bytes(decrypted_data, 'big')
         decrypted_message = decrypt_rsa(ciphertext_rsa, d, n)
-        print('decrypted_message:',decrypted_message)
     with open(path + ".dec", "wb") as decrypted_file:
         decrypted_file.write(decrypted_message.to_bytes((decrypted_message.bit_length() + 7) // 8, 'big'))
 
