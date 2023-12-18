@@ -66,12 +66,12 @@ phi_n = (p - 1) * (q - 1)
 e = find_coprime(phi_n)
 d = mod_inverse(e, phi_n)
 
-# print('p:',p)
-# print('q:',q)   
-# print('n:',n)
-# print('phi_n:',phi_n)
-# print('e:',e)
-# print('d:',d)
+print('p:',p)
+print('q:',q)   
+print('n:',n)
+print('phi_n:',phi_n)
+print('e:',e)
+print('d:',d)
 
 def encrypt_rsa(m, e, n):
     return pow(m, e, n)
