@@ -83,18 +83,18 @@ def decrypt_rsa(c, d, n):
 def generate_encryption_key():
     return Fernet.generate_key()
 
-def encrypt_with_fernet_and_rsa(path, encryption_key, e, n):
-    cipher = Fernet(encryption_key)
-    with open(path, "rb") as file:
-        data = file.read()
-        m = int(data.hex(), 16)
-        # print('m:',m)
-        ciphertext_rsa = encrypt_rsa(m, e, n)
-        # print('ciphertext_rsa: ',ciphertext_rsa)
-        encrypted_data = cipher.encrypt(ciphertext_rsa.to_bytes((ciphertext_rsa.bit_length() + 7) // 8, 'big'))
+# def encrypt_with_fernet_and_rsa(path, encryption_key, e, n):
+#     cipher = Fernet(encryption_key)
+#     with open(path, "rb") as file:
+#         data = file.read()
+#         m = int(data.hex(), 16)
+#         # print('m:',m)
+#         ciphertext_rsa = encrypt_rsa(m, e, n)
+#         # print('ciphertext_rsa: ',ciphertext_rsa)
+#         encrypted_data = cipher.encrypt(ciphertext_rsa.to_bytes((ciphertext_rsa.bit_length() + 7) // 8, 'big'))
 
-    with open(path + ".enc", "wb") as encrypted_file:
-        encrypted_file.write(encrypted_data)
+#     with open(path + ".enc", "wb") as encrypted_file:
+#         encrypted_file.write(encrypted_data)
 
 def decrypt_with_fernet_and_rsa(path, encryption_key, d, n):
     cipher = Fernet(encryption_key)
